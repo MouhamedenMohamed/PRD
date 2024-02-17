@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+    <link rel="stylesheet" href="res/css/pydio.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .section-columns {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            background-image: url('res/css/download.png');
+            background-size: contain; /* Adjusted background-size */
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        #install {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body class="html">
+
+    <div class="section-columns">
+        <div id="install"></div>
+    </div>
+
+    <script src="./res/build/PydioInstall.js"></script>
+</body>
+</html>
