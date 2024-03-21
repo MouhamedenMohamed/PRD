@@ -1,3 +1,7 @@
+BrainShare is a platform designed to facilitate the sharing and accessibility of medical imaging data and its derivatives, including segmentations, graphs, pre-processed images, and more
+
+
+
 #### Third Party Library
 
 ##### JavaScript

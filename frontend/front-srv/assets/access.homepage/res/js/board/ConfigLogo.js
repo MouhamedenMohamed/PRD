@@ -36,7 +36,7 @@ const ConfigLogo =({pydio, pluginName, pluginParameter, style, darkMode, classNa
             url = pydio.Parameters.get('ENDPOINT_REST_API') + "/frontend/binaries/GLOBAL/" + logo;
         }
     }
-    return <img alt={"application logo"} src={url} style={style} className={className}/>
+    return <img  src={url} style={style} className={className}/>
 }
 
 

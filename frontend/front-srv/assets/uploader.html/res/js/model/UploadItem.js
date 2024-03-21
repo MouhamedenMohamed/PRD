@@ -27,6 +27,7 @@ import Configs from './Configs'
 
 
 class UploadItem extends StatusItem {
+    
 
     constructor(file, targetNode, relativePath = null, parent = null, userMeta = undefined){
         super('file', targetNode, parent);
@@ -70,6 +71,8 @@ class UploadItem extends StatusItem {
     }
 
     getFile(){
+        console.log('File Path:', this.getFullPath()); // Assuming file object has a 'path' property
+
         return this._file;
     }
     getSize(){
@@ -100,6 +103,7 @@ class UploadItem extends StatusItem {
         };
 
         const progress = (computableEvent)=>{
+            console.log('File Path========================:', this.getFullPath());
             if (this._status === StatusItem.StatusError) {
                 return;
             }
@@ -197,7 +201,7 @@ class UploadItem extends StatusItem {
         }
         if(this.xhr){
             try{
-                //console.log('Should abort', this.getFullPath());
+                console.log('Should abort', this.getFullPath());
                 this._userAborted = true;
                 this.xhr.abort();
             }catch(e){}
@@ -239,10 +243,14 @@ class UploadItem extends StatusItem {
         }
         // For encrypted datasource, do not use multipart!
         if (this.getSize() < PydioApi.getMultipartThreshold()) {
+            console.log('File Path:', fullPath); // Assuming file object has a 'path' property
+
             PydioApi.getClient().uploadPresigned(this._file, fullPath, completeCallback, errorCallback, progressCallback, this._userMeta).then(xhr => {
                 this.xhr = xhr;
             });
         } else {
+            console.log('File Path:', fullPath); // Assuming file object has a 'path' property
+
             PydioApi.getClient().uploadMultipart(this._file, fullPath, completeCallback, errorCallback, progressCallback, this._userMeta).then(managed => {
                 this.xhr = managed;
             });

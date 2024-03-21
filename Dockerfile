@@ -1,40 +1,25 @@
-# Use a minimal base image
-FROM golang:alpine AS builder
+# Use a base image with your preferred Linux distribution
+FROM ubuntu:latest
 
-# Set environment variables
-ARG GIT_REV
-ENV DEV_VERSION=4.4.0-dev \
-    GOOS=linux \
-    TODAY=2024-02-14T00:00:00 \
-    TIMESTAMP=20240214000000 \
-    GITREV=${GIT_REV} \
-    CELLS_VERSION=${DEV_VERSION}.${TIMESTAMP}
+# Install Go Lang
+RUN apt-get update && \
+    apt-get install -y golang && \
+    apt-get clean
+
+# Install MySQL client
+RUN apt-get update && \
+    apt-get install -y mysql-client && \
+    apt-get clean
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the Pydio application source code into the container
+# Copy your Pydio Cells application files into the Docker image
 COPY . .
 
-# Build the Pydio application
-RUN CGO_ENABLED=0 go build -a -trimpath \
-    -ldflags "-X github.com/pydio/cells/v4/common.version=${CELLS_VERSION} \
-    -X github.com/pydio/cells/v4/common.BuildStamp=${TODAY} \
-    -X github.com/pydio/cells/v4/common.BuildRevision=${GITREV}" \
-    -o cells .
-
-# Use a minimal base image for the final image
-FROM alpine:latest
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the Pydio application binary from the builder stage into the final image
-COPY --from=builder /app/cells .
-
-# Expose the port(s) required by your Pydio application
+# Expose the required ports
 EXPOSE 8080
 
-# Command to run the Pydio application
+# Command to start your Pydio Cells application
 CMD ["./cells"]
 

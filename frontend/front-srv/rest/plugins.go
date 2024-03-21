@@ -41,6 +41,7 @@ import (
 var BasePluginsBox = frontend.PluginBox{
 	Box: front_srv.FrontendAssets,
 	Exposes: []string{
+		//editors add or remove
 		"access.directory",
 		"access.gateway",
 		"access.homepage",

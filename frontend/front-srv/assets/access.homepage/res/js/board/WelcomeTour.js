@@ -18,13 +18,17 @@
  * The latest code can be found at <https://pydio.com>.
  */
 
+// Import necessary components and utilities
 import {Component} from 'react'
 import Pydio from 'pydio'
+
+// Destructuring to extract required components
 const {AsyncComponent, PydioContextConsumer} = Pydio.requireLib('boot');
 const {ThemeTogglerCard, Scheme} = Pydio.requireLib('workspaces')
 
+// Define a functional component for rendering workspace-related information
 let WorkspacesCard = (props) => {
-
+    // Function to render a ray
     const renderRay = (angle) => {
         return (
             <div style={{position:'absolute', top: 52, left: 20, width: 80, display:'flex', transformOrigin:'left', transform:'rotate('+(-angle)+'deg)'}}>
@@ -35,6 +39,7 @@ let WorkspacesCard = (props) => {
         )
     };
 
+    // Return JSX for rendering workspace-related content
     return (
         <div>
             <p>{props.message('workspaces.1')}</p>
@@ -58,9 +63,10 @@ let WorkspacesCard = (props) => {
 
 };
 
-
+// Define a functional component for rendering search-related information
 let SearchCard = (props) => {
 
+    // Return JSX for rendering search-related content
     return (
         <div>
             <p>{props.message('globsearch.1')}</p>
@@ -80,17 +86,22 @@ let SearchCard = (props) => {
 
 };
 
+// Define a class component for rendering the welcome tour
 class WelcomeTour extends Component{
 
+    // Constructor to initialize state and context
     constructor(props, context){
         super(props, context);
+        // Determine if the tour has already started
         this.state = {started: !(props.pydio.user && !props.pydio.user.getPreference('gui_preferences', true)['UserAccount.WelcomeModal.Shown'])};
     }
 
+    // Lifecycle method, called after component is mounted
     componentDidMount(){
         const {pydio} = this.props;
         const {started} = this.state;
         if(!started){
+            // Delayed start of the welcome tour
             setTimeout(()=> {
                 pydio.UI.openComponentInModal('UserAccount', 'WelcomeModal', {
                     onRequestStart:(skip) => {
@@ -106,6 +117,7 @@ class WelcomeTour extends Component{
         }
     }
 
+    // Method to mark tour as finished and save preferences
     discard(finished = false){
         const {pydio, onFinish} = this.props;
         const {user} =  pydio;
@@ -122,14 +134,17 @@ class WelcomeTour extends Component{
         user.savePreference('gui_preferences');
     }
 
+    // Method to render the welcome tour component
     render(){
 
+        // Return null if the tour has not started yet
         if(!this.state.started){
             return null;
         }
         const {getMessage} = this.props;
         const message = (id) => getMessage('ajax_gui.tour.' + id);
 
+        // Define steps for the welcome tour
         let tourguideSteps = [
             {
                 title       : message('theme.title'),
@@ -151,6 +166,7 @@ class WelcomeTour extends Component{
             },
         ];
         /*
+        // Additional steps based on user repositories
         if(this.props.pydio.user){
             let hasAccessRepo = false;
             this.props.pydio.user.getRepositoriesList().forEach((entry) => {
@@ -168,11 +184,13 @@ class WelcomeTour extends Component{
             }
         }*/
 
+        // Callback function to handle events during the tour
         const callback = (data) => {
             if(data.type === 'step:after' && data.index === tourguideSteps.length - 1 ){
                 this.discard(true);
             }
         };
+        // Render the welcome tour component
         return (
             <AsyncComponent
                 namespace="PydioWorkspaces"
@@ -192,6 +210,8 @@ class WelcomeTour extends Component{
 
 }
 
+// Wrap the WelcomeTour component with Pydio context consumer
 WelcomeTour = PydioContextConsumer(WelcomeTour);
 
+// Export the WelcomeTour component as default export
 export {WelcomeTour as default}

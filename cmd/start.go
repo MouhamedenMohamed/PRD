@@ -349,7 +349,7 @@ func init() {
 	addRegistryFlags(StartCmd.Flags())
 	addSiteOverrideFlags(StartCmd.Flags(), true)
 
-	StartCmd.Flags().String(runtime.KeyLog, "info", "Output log level: debug, info, warn, error (production is equivalent to log_json+info)")
+	StartCmd.Flags().String(runtime.KeyLog, "debug", "Output log level: debug, info, warn, error (production is equivalent to log_json+info)")
 	StartCmd.Flags().Bool(runtime.KeyLogJson, false, "Output log formatted as JSON instead of text")
 	StartCmd.Flags().Bool(runtime.KeyLogToFile, common.MustLogFileDefaultValue(), "Write logs on-file in CELLS_LOG_DIR")
 	StartCmd.Flags().Bool(runtime.KeyEnableMetrics, false, "Instrument code to expose internal metrics (to local JSON file, or service discovery if Metrics Basic Auth is set)")
